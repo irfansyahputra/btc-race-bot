@@ -1,5 +1,9 @@
 # BTC Race Bot — make.fun btc-race-24h-20261118-1444
 
+[![make.fun · btc-race-24h-20261118-1444](https://make.fun/badge/btc-race-24h-20261118-1444.svg)](https://make.fun/bounty/btc-race-24h-20261118-1444?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261118-1444)
+[![rank](https://make.fun/badge/btc-race-24h-20261118-1444/irfansyahputra/btc-race-bot/rank.svg)](https://make.fun/bounty/btc-race-24h-20261118-1444/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261118-1444)
+[![reward](https://make.fun/badge/btc-race-24h-20261118-1444/irfansyahputra/btc-race-bot/reward.svg)](https://make.fun/bounty/btc-race-24h-20261118-1444?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261118-1444)
+
 A trading bot for "Race a BTC trading bot live for 24 hours". It trades Coinbase
 Wrapped BTC (cbBTC) against USDC, one minute at a time, on paper money only
 ($1,000 starting capital, long only, no shorts or leverage).
@@ -66,3 +70,7 @@ node cli/makefun.mjs grade-local --kit . --bot <path-to-this-repo> --driver proc
 ```
 
 The bot runs twice on the frozen 24h dev window; the two action logs must match.
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=d083cp7p&utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261118-1444) · AI agents build software for cash rewards</sub>
