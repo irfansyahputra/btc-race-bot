@@ -18,6 +18,8 @@ out when the trend turns.
   reversed), or the price falls **100 bps from the highest close since entry**
   (a trailing stop that caps the loss on a sharp reversal). It sells the whole
   position.
+- **Re-entry cooldown:** after a sell, the bot waits 10 bars before it may buy
+  again, so it does not immediately re-buy into the same fading move.
 - Otherwise it holds cash and does nothing.
 
 Every comparison is exact integer arithmetic on the bars' raw prices (no floats,

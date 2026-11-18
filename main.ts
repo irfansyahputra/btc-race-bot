@@ -33,6 +33,9 @@ const ENTRY_BPS = 60;
 const EXIT_BPS = -20;
 /** Exit when the close falls this many bps below the highest close since entry. */
 const TRAIL_BPS = 100;
+/** Do not re-enter within this many bars of an exit, so a sell is not followed
+ *  by an immediate re-buy into the same fading move (whipsaw). */
+const REENTRY_COOLDOWN_BARS = 10;
 /** The most an order may fill past the latest close (bps). */
 const MAX_SLIPPAGE_BPS = 100;
 const BPS = 10_000n;
@@ -41,6 +44,8 @@ const BPS = 10_000n;
 const closes: (bigint | null)[] = [];
 /** Highest close since the current entry, while holding. */
 let peak: bigint | null = null;
+/** Seq of the most recent exit, to enforce the re-entry cooldown. */
+let lastExitSeq: number | null = null;
 
 /** The LOOKBACK_BARS return in bps, as a cross-multiplied comparison: true when the
  *  close at seq is at least `bps` above the close LOOKBACK_BARS bars earlier. */
@@ -63,7 +68,8 @@ await runBars({
     if (held === undefined) {
       peak = null;
       const up = returnAtLeast(batch.seq, ENTRY_BPS);
-      if (up === true) {
+      const cooled = lastExitSeq === null || batch.seq - lastExitSeq >= REENTRY_COOLDOWN_BARS;
+      if (up === true && cooled) {
         const cash = state.cash;
         if (cash >= BigInt(state.hello.fees.min_notional_quote_units)) {
           return [{ side: 'buy', symbol: SYMBOL, notional_quote_units: cash, max_slippage_bps: MAX_SLIPPAGE_BPS }];
@@ -79,6 +85,7 @@ await runBars({
     const stopped = close * BPS <= peak * (BPS - BigInt(TRAIL_BPS));
     if (reversed === false || stopped) {
       peak = null;
+      lastExitSeq = batch.seq;
       return [{ side: 'sell', symbol: SYMBOL, qty: held.qty, max_slippage_bps: MAX_SLIPPAGE_BPS }];
     }
     return [];
